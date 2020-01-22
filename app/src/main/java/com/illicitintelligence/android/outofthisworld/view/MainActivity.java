@@ -1,5 +1,8 @@
 package com.illicitintelligence.android.outofthisworld.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,10 +14,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +28,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     List<Item> items = null;
     AnimatedVectorDrawable animatedVectorDrawable;
     AnimatedVectorDrawable circler;
+    boolean doneOnce=false;
 
     Handler handler = new Handler();
 
@@ -71,10 +80,10 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals(Constants.START_ANIMATION)){
+            if(Constants.START_ANIMATION.equals(intent.getAction())){
                 animatedVectorDrawable.start();
                 startService(new Intent(getBaseContext(),TimeKeeper.class));
-            }else if(intent.getAction().equals(Constants.START_ANIMATION_THREE)){
+            }else if(Constants.START_ANIMATION_THREE.equals(intent.getAction())){
                 Log.d(TAG, "onReceive: broadcast received 3 seconds");
                 circler.start();
             }
@@ -97,9 +106,69 @@ public class MainActivity extends AppCompatActivity {
         setUpObserver();
         setUpMenu();
 
+        startSplashScreen();
+
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+    }
+
+    private void startSplashScreen() {
+        ImageView sunImage = findViewById(R.id.sun);
+        AnimatedVectorDrawable sun = (AnimatedVectorDrawable)sunImage.getBackground();
+
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1f,
+                1.5f,
+                1f,
+                1.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f);
+        scaleAnimation.setDuration(1000);
+        scaleAnimation.setFillAfter(true);
+        scaleAnimation.setFillEnabled(true);
+
+        ScaleAnimation scaleAnimation2 = new ScaleAnimation(1.5f,
+                2.5f,
+                1.5f,
+                2.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f);
+        scaleAnimation2.setDuration(400);
+        scaleAnimation2.setFillAfter(true);
+        scaleAnimation2.setFillEnabled(true);
+
+        sunImage.startAnimation(scaleAnimation);
+        scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) { }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                sun.start();
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+        });
+        sun.registerAnimationCallback(new Animatable2.AnimationCallback() {
+            @Override
+            public void onAnimationEnd(Drawable drawable) {
+                super.onAnimationEnd(drawable);
+                sunImage.startAnimation(scaleAnimation2);
+                ConstraintSet set2 = new ConstraintSet();
+                set2.load(MainActivity.this, R.layout.activity_main_copy);
+                TransitionManager.beginDelayedTransition(findViewById(R.id.original_layout));
+                set2.applyTo(findViewById(R.id.original_layout));
+                sunImage.startAnimation(scaleAnimation2);
+                if(circler!=null){
+                    circler.start();
+                }
+            }
+        });
+
+
     }
 
     private void setUpMenu(){
@@ -110,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                findViewById(R.id.splashScreen).setVisibility(View.GONE);
                 if(editText.getText().toString().equals("")) {
                     menu.show();
                 }else{
@@ -141,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
         });
         animatedVectorDrawable = (AnimatedVectorDrawable) imageView.getBackground();
         circler = (AnimatedVectorDrawable) titleTV.getBackground();
-        circler.start();
         circler.registerAnimationCallback(new Animatable2.AnimationCallback() {
             @Override
             public void onAnimationEnd(Drawable drawable) {
