@@ -19,10 +19,11 @@ public class TimeKeeper extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         try {
             Random random = new Random();
-            int n = random.nextInt(30);
+            int n = random.nextInt(5);
             n+=10;
-            for(int i = 0; i<15; i++) {
-                Thread.sleep(1000);
+            for(int i = 0; i<n; i++) {
+                Thread.sleep(2400);
+                //sendBroadcast(new Intent(Constants.START_ANIMATION_THREE));
             }
             sendBroadcast(new Intent(Constants.START_ANIMATION));
         } catch (InterruptedException e) {

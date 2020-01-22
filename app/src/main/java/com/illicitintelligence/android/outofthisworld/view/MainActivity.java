@@ -1,39 +1,36 @@
 package com.illicitintelligence.android.outofthisworld.view;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.drawable.Animatable2;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import android.app.Activity;
-import android.app.Notification;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.drawable.AnimatedVectorDrawable;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Adapter;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.TextView;
-
 import com.illicitintelligence.android.outofthisworld.R;
 import com.illicitintelligence.android.outofthisworld.adapter.RVAdapter;
-import com.illicitintelligence.android.outofthisworld.model.Collection;
-import com.illicitintelligence.android.outofthisworld.model.Datum;
 import com.illicitintelligence.android.outofthisworld.model.Item;
 import com.illicitintelligence.android.outofthisworld.util.Constants;
 import com.illicitintelligence.android.outofthisworld.util.TimeKeeper;
@@ -53,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
     RVAdapter adapter;
     List<Item> items = null;
     AnimatedVectorDrawable animatedVectorDrawable;
+    AnimatedVectorDrawable circler;
+
+    Handler handler = new Handler();
 
     @BindView(R.id.menu_selector)
     ImageView imageView;
@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
     TextView noResultsTV;
     @BindView(R.id.searched_text)
     TextView searchedText;
+    @BindView(R.id.title)
+    TextView titleTV;
+
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -71,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
             if(intent.getAction().equals(Constants.START_ANIMATION)){
                 animatedVectorDrawable.start();
                 startService(new Intent(getBaseContext(),TimeKeeper.class));
+            }else if(intent.getAction().equals(Constants.START_ANIMATION_THREE)){
+                Log.d(TAG, "onReceive: broadcast received 3 seconds");
+                circler.start();
             }
         }
     };
@@ -107,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
                 if(editText.getText().toString().equals("")) {
                     menu.show();
                 }else{
+                    circler.start();
+                    items = null;
                     viewModel.search(editText.getText().toString(),1);
                     searchedText.setText(editText.getText());
                     editText.setText("");
@@ -132,9 +140,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         animatedVectorDrawable = (AnimatedVectorDrawable) imageView.getBackground();
+        circler = (AnimatedVectorDrawable) titleTV.getBackground();
+        circler.start();
+        circler.registerAnimationCallback(new Animatable2.AnimationCallback() {
+            @Override
+            public void onAnimationEnd(Drawable drawable) {
+                super.onAnimationEnd(drawable);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            if (adapter.getItemCount() == 0) {
+                                circler.start();
+                            }
+                        } catch (NullPointerException n) {
+                            circler.start();
+                        }
+                    }
+                });
+            }
+        });
+
         //animatedVectorDrawable.start();
         startService(new Intent(this,TimeKeeper.class));
-        registerReceiver(broadcastReceiver, new IntentFilter(Constants.START_ANIMATION));
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.START_ANIMATION);
+        filter.addAction(Constants.START_ANIMATION_THREE);
+        registerReceiver(broadcastReceiver, filter);
     }
 ////////close the keyboard after typing
     public static void hideKeyboard(Activity activity) {

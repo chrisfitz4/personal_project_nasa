@@ -16,9 +16,14 @@
         android:textSize="40sp"
         android:fontFamily="sans-serif-thin"
         android:textStyle="italic"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@drawable/circler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"/>
 
     <TextView

@@ -31,11 +31,18 @@ public class NasaViewModel extends ViewModel {
         collectionCall.enqueue(new Callback<Example>() {
             @Override
             public void onResponse(@NonNull Call<Example> call, @NonNull Response<Example> response) {
-                if (response.body().getCollection().getItems() == null) {
-                    //todo tell that nothing was returned
-                } else if (pageNum == 1) {
+                if (pageNum == 1) {
                     Log.d(TAG, "onResponse: " + pageNum);
                     liveData.setValue(response.body().getCollection().getItems());
+                    if(response.body().getCollection().getItems()!=null){
+                        try {
+                            Log.d(TAG, "onResponse: " + response.body().getCollection().getItems().get(0).getData().get(0).getDescription());
+                        }catch(NullPointerException n){
+                            Log.d(TAG, "onResponse: error "+n.getMessage());
+                        }
+                    }else{
+                        Log.d(TAG, "onResponse null: ");
+                    }
                 } else {
                     List<Item> data = liveData.getValue();
                     for (int i = 0; i < response.body().getCollection().getItems().get(0).getData().size(); i++) {

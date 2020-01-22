@@ -1,0 +1,127 @@
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:name="vector"
+            android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <group android:name="group">
+                <path
+                    android:name="path"
+                    android:pathData="M 0 24 L 10 24 L 10 24"
+                    android:strokeColor="#009966"
+                    android:strokeWidth="2"/>
+            </group>
+        </vector>
+    </aapt:attr>
+    <target android:name="group">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:propertyName="translateY"
+                    android:startOffset="600"
+                    android:duration="300"
+                    android:valueFrom="0"
+                    android:valueTo="-14"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/linear_interpolator"/>
+                <objectAnimator
+                    android:propertyName="translateX"
+                    android:duration="300"
+                    android:valueFrom="0"
+                    android:valueTo="14"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/linear_interpolator"/>
+                <objectAnimator
+                    android:propertyName="translateX"
+                    android:startOffset="300"
+                    android:duration="300"
+                    android:valueFrom="14"
+                    android:valueTo="24"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/linear_interpolator"/>
+                <objectAnimator
+                    android:propertyName="translateY"
+                    android:startOffset="900"
+                    android:duration="300"
+                    android:valueFrom="-14"
+                    android:valueTo="-24"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/linear_interpolator"/>
+                <objectAnimator
+                    android:propertyName="translateX"
+                    android:startOffset="1200"
+                    android:duration="300"
+                    android:valueFrom="24"
+                    android:valueTo="10"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/linear_interpolator"/>
+                <objectAnimator
+                    android:propertyName="translateX"
+                    android:startOffset="1500"
+                    android:duration="300"
+                    android:valueFrom="10"
+                    android:valueTo="0"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/linear_interpolator"/>
+                <objectAnimator
+                    android:propertyName="translateY"
+                    android:startOffset="1800"
+                    android:duration="300"
+                    android:valueFrom="-24"
+                    android:valueTo="-10"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/linear_interpolator"/>
+                <objectAnimator
+                    android:propertyName="translateY"
+                    android:startOffset="2100"
+                    android:duration="300"
+                    android:valueFrom="-10"
+                    android:valueTo="0"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/linear_interpolator"/>
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="path">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:propertyName="pathData"
+                    android:startOffset="300"
+                    android:duration="300"
+                    android:valueFrom="M 0 24 L 10 24 L 10 24"
+                    android:valueTo="M 0 24 L 0 24 L 0 14"
+                    android:valueType="pathType"
+                    android:interpolator="@android:anim/linear_interpolator"/>
+                <objectAnimator
+                    android:propertyName="pathData"
+                    android:startOffset="900"
+                    android:duration="300"
+                    android:valueFrom="M 0 24 L 0 14 L 0 14"
+                    android:valueTo="M 0 24 L 0 24 L -10 24"
+                    android:valueType="pathType"
+                    android:interpolator="@android:anim/linear_interpolator"/>
+                <objectAnimator
+                    android:propertyName="pathData"
+                    android:startOffset="1500"
+                    android:duration="300"
+                    android:valueFrom="M 0 24 L -10 24 L -10 24"
+                    android:valueTo="M 0 24 L 0 24 L 0 34"
+                    android:valueType="pathType"
+                    android:interpolator="@android:anim/linear_interpolator"/>
+                <objectAnimator
+                    android:propertyName="pathData"
+                    android:startOffset="2100"
+                    android:duration="300"
+                    android:valueFrom="M 0 24 L 0 34 L 0 34"
+                    android:valueTo="M 0 24 L 0 24 L 10 24"
+                    android:valueType="pathType"
+                    android:interpolator="@android:anim/linear_interpolator"/>
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>
