@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         animatedVectorDrawable = (AnimatedVectorDrawable) imageView.getBackground();
-        animatedVectorDrawable.start();
+        //animatedVectorDrawable.start();
         startService(new Intent(this,TimeKeeper.class));
         registerReceiver(broadcastReceiver, new IntentFilter(Constants.START_ANIMATION));
     }

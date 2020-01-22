@@ -27,8 +27,4 @@ public class ExampleInstrumentedTest {
         assertEquals("com.illicitintelligence.android.outofthisworld", appContext.getPackageName());
     }
 
-    @Test
-    public void espressoTesto(){
-
-    }
 }
