@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="Planets"
+        android:contentDescription="planet">
+        <menu>
+            <item android:title="Mercury"
+                android:contentDescription="mercury"/>
+            <item android:title="Venus"
+                android:contentDescription="venus"/>
+            <item android:title="Earth"
+                android:contentDescription="earth"/>
+            <item android:title="Mars"
+                android:contentDescription="mars"/>
+            <item android:title="Jupiter"
+                android:contentDescription="jupiter"/>
+            <item android:title="Saturn"
+                android:contentDescription="saturn"/>
+            <item android:title="Uranus"
+                android:contentDescription="uranus"/>
+            <item android:title="Neptune"
+                android:contentDescription="neptune"/>
+        </menu>
+    </item>
+    <item android:title="Stars"
+        android:contentDescription="star">
+        <menu>
+            <item android:title="Our Sun"
+                android:contentDescription="sun"/>
+            <item android:title="Red Giants"
+                android:contentDescription="red giant"/>
+            <item android:title="Supernovas"
+                android:contentDescription="supernova"/>
+            <item android:title="Dwarf Stars"
+                android:contentDescription="dwarf star"/>
+        </menu>
+    </item>
+    <item android:title="Comets"
+        android:contentDescription="comet"/>
+    <item android:title="Nebulas"
+        android:contentDescription="nebula"/>
+    <item android:title="Galaxies"
+        android:contentDescription="galaxy"/>
+    <item android:title="Black Holes"
+        android:contentDescription="black hole"/>
+    <item android:title="@string/custom_search"
+        android:contentDescription="custom"/>
+</menu>
